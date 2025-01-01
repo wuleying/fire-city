@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}城市列表{% endblock %}
+{% block title %}{% if search_query %}搜索：{{ search_query }}{% else %}城市列表{% endif %}{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>城市列表</h2>
+    <h2>{% if search_query %}搜索结果：{{ search_query }}{% else %}城市列表{% endif %}</h2>
     {% if current_user.is_authenticated %}
     <a href="{{ url_for('city.create') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i> 添加城市
     </a>
     {% endif %}
 </div>
+
+{% if search_query and not cities %}
+<div class="alert alert-info">
+    没有找到与"{{ search_query }}"相关的城市。
+</div>
+{% endif %}
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for city in cities %}

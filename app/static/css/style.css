@@ -1,0 +1,128 @@
+/* 全局样式 */
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 导航栏样式 */
+.navbar {
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* 页面内容 */
+.container {
+    flex: 1;
+    padding: 2rem 1rem;
+}
+
+/* 卡片样式 */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* 表单样式 */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* 按钮样式 */
+.btn {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* 评分进度条 */
+.progress {
+    height: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    line-height: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* 页脚样式 */
+footer {
+    margin-top: auto;
+    padding: 1rem 0;
+    background-color: #343a40;
+    color: #fff;
+}
+
+/* 认证页面样式 */
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.auth-container h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 搜索框样式 */
+.search-form {
+    margin-bottom: 2rem;
+}
+
+.search-form .form-control {
+    border-radius: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* 消息提示样式 */
+.alert {
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .card-img-top {
+        height: 150px;
+    }
+    
+    .auth-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+}

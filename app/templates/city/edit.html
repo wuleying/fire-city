@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}编辑城市{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">编辑城市</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {{ form.csrf_token }}
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                            {% if form.name.errors %}
+                                {% for error in form.name.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows="5") }}
+                            {% if form.description.errors %}
+                                {% for error in form.description.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.cost_of_living.label(class="form-label") }}
+                            {{ form.cost_of_living(class="form-control", type="number", step="0.01") }}
+                            {% if form.cost_of_living.errors %}
+                                {% for error in form.cost_of_living.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="form-text">每月生活成本（不含房租），单位：元</div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form.housing_cost.label(class="form-label") }}
+                            {{ form.housing_cost(class="form-control", type="number", step="0.01") }}
+                            {% if form.housing_cost.errors %}
+                                {% for error in form.housing_cost.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="form-text">每月房租或房贷，单位：元</div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('city.detail', id=city.id) }}" class="btn btn-secondary">取消</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
