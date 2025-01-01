@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}城市列表{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>城市列表</h2>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('city.create') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> 添加城市
+    </a>
+    {% endif %}
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for city in cities %}
+    <div class="col">
+        <div class="card h-100">
+            {% if city.image_url %}
+            <img src="{{ city.image_url }}" class="card-img-top" alt="{{ city.name }}">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top" alt="默认城市图片">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ city.name }}</h5>
+                <p class="card-text">{{ city.description[:150] }}...</p>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <small class="text-muted">宜居指数</small>
+                        <small class="text-muted">{{ "%.1f"|format(city.livability_score or 0) }}/10</small>
+                    </div>
+                    <div class="progress" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ (city.livability_score or 0) * 10 }}%"></div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{{ url_for('city.detail', id=city.id) }}" class="btn btn-sm btn-outline-primary">查看详情</a>
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('city.edit', id=city.id) }}" class="btn btn-sm btn-outline-secondary">编辑</a>
+                        {% endif %}
+                    </div>
+                    <small class="text-muted">均价: {{ city.avg_house_price }}元/㎡</small>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">
+                        <i class="fas fa-train"></i> {{ '高铁' if city.has_high_speed_rail else '-' }}
+                    </small>
+                    <small class="text-muted">
+                        <i class="fas fa-subway"></i> {{ '地铁' if city.has_subway else '-' }}
+                    </small>
+                    <small class="text-muted">
+                        <i class="fas fa-plane"></i> {{ '机场' if city.has_airport else '-' }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if pagination %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('city.index', page=pagination.prev_num) }}">上一页</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">上一页</span>
+        </li>
+        {% endif %}
+
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('city.index', page=page) }}">{{ page }}</a>
+                </li>
+                {% else %}
+                <li class="page-item active">
+                    <span class="page-link">{{ page }}</span>
+                </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('city.index', page=pagination.next_num) }}">下一页</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">下一页</span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

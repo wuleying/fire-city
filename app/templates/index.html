@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">欢迎来到 Fire City</h1>
+    <p class="lead">在这里，您可以找到最适合躺平FIRE的城市</p>
+    <hr class="my-4">
+    <p>我们提供详细的城市信息，包括生活成本、医疗教育配套、交通设施等，帮助您做出最佳选择。</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('city.index') }}" role="button">浏览城市</a>
+</div>
+
+<div class="my-5">
+    <h2 class="text-center mb-4">最新城市</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for city in cities %}
+        <div class="col">
+            <div class="card h-100">
+                {% if city.image_url %}
+                <img src="{{ city.image_url }}" class="card-img-top" alt="{{ city.name }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top" alt="默认城市图片">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ city.name }}</h5>
+                    <p class="card-text">{{ city.description[:100] }}...</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="{{ url_for('city.detail', id=city.id) }}" class="btn btn-sm btn-outline-primary">查看详情</a>
+                        </div>
+                        <small class="text-muted">宜居指数: {{ "%.1f"|format(city.livability_score or 0) }}/10</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="row my-5">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-city fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">城市信息</h5>
+                <p class="card-text">提供详细的城市基本信息、气候特点和适合人群等数据。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-hospital-user fa-3x mb-3 text-success"></i>
+                <h5 class="card-title">配套设施</h5>
+                <p class="card-text">医疗、教育、生活等配套设施的完整评分和详细说明。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-home fa-3x mb-3 text-warning"></i>
+                <h5 class="card-title">房价信息</h5>
+                <p class="card-text">房价走势、房型分布等关键数据，助您做出明智选择。</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
