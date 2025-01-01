@@ -13,7 +13,13 @@
                 <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top" alt="默认城市图片">
                 {% endif %}
                 <div class="card-body">
-                    <h1 class="card-title">{{ city.name }} <small class="text-muted">({{ city.code }})</small></h1>
+                    <h1 class="card-title">
+                        {{ city.name }} 
+                        <small class="text-muted">({{ city.code }})</small>
+                        {% if avg_score > 0 %}
+                        <span class="badge bg-warning text-dark">{{ "%.1f"|format(avg_score) }}分</span>
+                        {% endif %}
+                    </h1>
                     <p class="card-text">{{ city.description }}</p>
                 </div>
             </div>
@@ -67,6 +73,71 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- 用户评分和评论区域 -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3>用户评价</h3>
+                    
+                    {% if current_user.is_authenticated and not user_review %}
+                    <div class="mb-4">
+                        <form method="post">
+                            {{ form.csrf_token }}
+                            <div class="mb-3">
+                                <label for="score" class="form-label">您的评分 (1-5分)</label>
+                                {{ form.score(class="form-control", type="number", min="1", max="5") }}
+                                {% if form.score.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.score.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">您的评论</label>
+                                {{ form.content(class="form-control", rows="3") }}
+                                {% if form.content.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.content.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">发表评论</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    
+                    {% if reviews %}
+                    <div class="reviews">
+                        {% for review in reviews %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        {{ review.user.username }}
+                                        <span class="badge bg-warning text-dark">{{ review.score }}分</span>
+                                    </h5>
+                                    <small class="text-muted">{{ review.created_at }}</small>
+                                </div>
+                                <p class="card-text mt-2">{{ review.content }}</p>
+                                {% if current_user.is_authenticated and review.user_id == current_user.id %}
+                                <form method="post" action="{{ url_for('.delete_review', id=review.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger" 
+                                            onclick="return confirm('确定要删除这条评论吗？')">删除</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">暂无评论</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

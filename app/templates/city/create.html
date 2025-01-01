@@ -4,44 +4,97 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>创建新城市</h2>
-    <form method="POST" action="{{ url_for('city.create') }}">
-        {{ form.hidden_tag() }}
-        <div class="form-group mb-3">
-            {{ form.name.label(class="form-label") }}
-            {{ form.name(class="form-control") }}
-            {% if form.name.errors %}
-            <div class="alert alert-danger">
-                {% for error in form.name.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">创建新城市</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('city.create') }}" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-group mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                            {% if form.name.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            {{ form.code.label(class="form-label") }}
+                            {{ form.code(class="form-control") }}
+                            {% if form.code.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.code.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows=5) }}
+                            {% if form.description.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.description.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            {{ form.image.label(class="form-label") }}
+                            {{ form.image(class="form-control") }}
+                            {% if form.image.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.image.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">支持 jpg、jpeg、png、gif 格式的图片</div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            {{ form.cost_of_living.label(class="form-label") }}
+                            {{ form.cost_of_living(class="form-control") }}
+                            {% if form.cost_of_living.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.cost_of_living.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            {{ form.housing_cost.label(class="form-label") }}
+                            {{ form.housing_cost(class="form-control") }}
+                            {% if form.housing_cost.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for error in form.housing_cost.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('city.index') }}" class="btn btn-secondary me-md-2">返回列表</a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
             </div>
-            {% endif %}
         </div>
-        <div class="form-group mb-3">
-            {{ form.code.label(class="form-label") }}
-            {{ form.code(class="form-control") }}
-            {% if form.code.errors %}
-            <div class="alert alert-danger">
-                {% for error in form.code.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        <div class="form-group mb-3">
-            {{ form.description.label(class="form-label") }}
-            {{ form.description(class="form-control") }}
-            {% if form.description.errors %}
-            <div class="alert alert-danger">
-                {% for error in form.description.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        <button type="submit" class="btn btn-primary">创建城市</button>
-        <a href="{{ url_for('city.index') }}" class="btn btn-secondary">返回列表</a>
-    </form>
+    </div>
 </div>
 {% endblock %}
