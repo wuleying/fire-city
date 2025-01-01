@@ -9,6 +9,6 @@ bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
     """首页路由"""
-    # 获取最新添加的10个城市
-    cities = City.query.order_by(City.created_at.desc()).limit(10).all()
+    # 获取最新添加的15个城市
+    cities = City.query.order_by(City.created_at.desc()).limit(15).all()
     return render_template('index.html', cities=cities)
