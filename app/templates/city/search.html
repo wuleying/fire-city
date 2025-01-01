@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}搜索城市{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>搜索结果</h1>
+    
+    {% if cities %}
+    <div class="row">
+        {% for city in cities %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if city.image_url %}
+                <img src="{{ city.image_url }}" class="card-img-top" alt="{{ city.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top" alt="默认城市图片" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ city.name }}</h5>
+                    <p class="card-text text-muted">{{ city.code }}</p>
+                    <p class="card-text">{{ city.description[:100] }}{% if city.description|length > 100 %}...{% endif %}</p>
+                    <a href="{{ url_for('city.detail', id=city.id) }}" class="btn btn-primary">查看详情</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        没有找到匹配的城市。
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{{ url_for('city.index') }}" class="btn btn-secondary">返回首页</a>
+    </div>
+</div>
+{% endblock %}

@@ -10,11 +10,12 @@
                 {% if city.image_url %}
                 <img src="{{ city.image_url }}" class="card-img-top" alt="{{ city.name }}">
                 {% else %}
-                <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top" alt="默认城市图片">
+                <img src="{{ url_for('static', filename='images/default-city.jpg') }}" class="card-img-top"
+                    alt="默认城市图片">
                 {% endif %}
                 <div class="card-body">
                     <h1 class="card-title">
-                        {{ city.name }} 
+                        {{ city.name }}
                         <small class="text-muted">({{ city.code }})</small>
                         {% if avg_score > 0 %}
                         <span class="badge bg-warning text-dark">{{ "%.1f"|format(avg_score) }}分</span>
@@ -31,10 +32,10 @@
                         <div class="col-md-3">
                             <h5>宜居程度</h5>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" 
-                                     style="width: {{ (city.livability_score or 0) * 10 }}%" 
-                                     aria-valuenow="{{ city.livability_score or 0 }}" 
-                                     aria-valuemin="0" aria-valuemax="10">
+                                <div class="progress-bar" role="progressbar"
+                                    style="width: {{ (city.livability_score or 0) * 10 }}%"
+                                    aria-valuenow="{{ city.livability_score or 0 }}" aria-valuemin="0"
+                                    aria-valuemax="10">
                                     {{ city.livability_score or 0 }}/10
                                 </div>
                             </div>
@@ -42,10 +43,9 @@
                         <div class="col-md-3">
                             <h5>医疗配套</h5>
                             <div class="progress">
-                                <div class="progress-bar bg-info" role="progressbar" 
-                                     style="width: {{ (city.medical_score or 0) * 10 }}%" 
-                                     aria-valuenow="{{ city.medical_score or 0 }}" 
-                                     aria-valuemin="0" aria-valuemax="10">
+                                <div class="progress-bar bg-info" role="progressbar"
+                                    style="width: {{ (city.medical_score or 0) * 10 }}%"
+                                    aria-valuenow="{{ city.medical_score or 0 }}" aria-valuemin="0" aria-valuemax="10">
                                     {{ city.medical_score or 0 }}/10
                                 </div>
                             </div>
@@ -53,10 +53,10 @@
                         <div class="col-md-3">
                             <h5>教育配套</h5>
                             <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" 
-                                     style="width: {{ (city.education_score or 0) * 10 }}%" 
-                                     aria-valuenow="{{ city.education_score or 0 }}" 
-                                     aria-valuemin="0" aria-valuemax="10">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ (city.education_score or 0) * 10 }}%"
+                                    aria-valuenow="{{ city.education_score or 0 }}" aria-valuemin="0"
+                                    aria-valuemax="10">
                                     {{ city.education_score or 0 }}/10
                                 </div>
                             </div>
@@ -64,10 +64,9 @@
                         <div class="col-md-3">
                             <h5>生活配套</h5>
                             <div class="progress">
-                                <div class="progress-bar bg-warning" role="progressbar" 
-                                     style="width: {{ (city.life_score or 0) * 10 }}%" 
-                                     aria-valuenow="{{ city.life_score or 0 }}" 
-                                     aria-valuemin="0" aria-valuemax="10">
+                                <div class="progress-bar bg-warning" role="progressbar"
+                                    style="width: {{ (city.life_score or 0) * 10 }}%"
+                                    aria-valuenow="{{ city.life_score or 0 }}" aria-valuemin="0" aria-valuemax="10">
                                     {{ city.life_score or 0 }}/10
                                 </div>
                             </div>
@@ -80,10 +79,10 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h3>用户评价</h3>
-                    
+
                     {% if current_user.is_authenticated and not user_review %}
                     <div class="mb-4">
-                        <form method="post">
+                        <form method="post" action="{{ url_for('city.review', id=city.id) }}">
                             {{ form.csrf_token }}
                             <div class="mb-3">
                                 <label for="score" class="form-label">您的评分 (1-5分)</label>
@@ -111,7 +110,7 @@
                         </form>
                     </div>
                     {% endif %}
-                    
+
                     {% if reviews %}
                     <div class="reviews">
                         {% for review in reviews %}
@@ -126,9 +125,10 @@
                                 </div>
                                 <p class="card-text mt-2">{{ review.content }}</p>
                                 {% if current_user.is_authenticated and review.user_id == current_user.id %}
-                                <form method="post" action="{{ url_for('.delete_review', id=review.id) }}" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-danger" 
-                                            onclick="return confirm('确定要删除这条评论吗？')">删除</button>
+                                <form method="post" action="{{ url_for('.delete_review', id=review.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('确定要删除这条评论吗？')">删除</button>
                                 </form>
                                 {% endif %}
                             </div>
@@ -148,19 +148,19 @@
                     <h3>基本信息</h3>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>生活成本：</strong> 
+                            <strong>生活成本：</strong>
                             {% if city.cost_of_living is not none %}
-                                {{ "%.2f"|format(city.cost_of_living|float) }}元/月
+                            {{ "%.2f"|format(city.cost_of_living|float) }}元/月
                             {% else %}
-                                暂无数据
+                            暂无数据
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <strong>房屋成本：</strong> 
+                            <strong>房屋成本：</strong>
                             {% if city.housing_cost is not none %}
-                                {{ "%.2f"|format(city.housing_cost|float) }}元/月
+                            {{ "%.2f"|format(city.housing_cost|float) }}元/月
                             {% else %}
-                                暂无数据
+                            暂无数据
                             {% endif %}
                         </li>
                         <li class="list-group-item">
@@ -170,11 +170,11 @@
                             <strong>适合人群：</strong> {{ city.suitable_crowd or '暂无数据' }}
                         </li>
                         <li class="list-group-item">
-                            <strong>平均房价：</strong> 
+                            <strong>平均房价：</strong>
                             {% if city.avg_house_price %}
-                                {{ city.avg_house_price }}元/平方米
+                            {{ city.avg_house_price }}元/平方米
                             {% else %}
-                                暂无数据
+                            暂无数据
                             {% endif %}
                         </li>
                         <li class="list-group-item">
